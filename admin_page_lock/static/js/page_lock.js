@@ -166,7 +166,8 @@ window.addEventListener("load", function() {
             window.process_data_interval = setInterval(periodical_update, api_interval);
 
             // Deactivate user leaving current page.
-            $(window).on('beforeunload', function() {
+            window.addEventListener('beforeunload', function(event) {
+                console.log('beforeunload was called');
                 // When user click `REFRESH` button then page lock can not deactivate same user refreshing page.
                 var url = get_base_url() + '/page_lock/close_page_connection/';
                 var data = {
