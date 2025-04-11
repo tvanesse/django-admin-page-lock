@@ -5,7 +5,7 @@ import logging
 
 from django.middleware.csrf import get_token
 from django.utils import timezone
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 from admin_page_lock import settings
 from admin_page_lock.settings import (
@@ -38,9 +38,9 @@ class PageLockHandler(object):
         # settings somehow or defined and stored in database. Right now, the
         # settings is same for all pages!
         lock_settings = {
-            "csrf_token": get_token(self.page_settings["req"])
-            if not DISABLE_CRSF_TOKEN
-            else "",
+            "csrf_token": (
+                get_token(self.page_settings["req"]) if not DISABLE_CRSF_TOKEN else ""
+            ),
             "homepage": HOMEPAGE,
             "messages": self.page_settings["messages"],
             "user_reference": self.page_settings["user_reference"],
