@@ -1,6 +1,6 @@
 from __future__ import unicode_literals
 
-import imp
+import importlib.util
 import io
 import os
 
@@ -23,11 +23,16 @@ def get_module():
         "__init__.py",
     )
 
-    return imp.load_source("page_lock", init_path)
+    spec = importlib.util.spec_from_file_location("page_lock", init_path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
 
 
 # Allow setup.py to be run from any path.
 os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
+
+module = get_module()
 
 setup(
     author="Vojtech Stefka",
@@ -43,6 +48,7 @@ setup(
         "Programming Language :: Python :: 2.7",
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.12",
         "Topic :: Software Development :: Libraries :: Python Modules",
     ],
     description="Page Lock application prevents users from editing "
@@ -54,9 +60,9 @@ setup(
     license="Apache License, Version 2.0",
     long_description=get_file_contents("README.md"),
     long_description_content_type="text/markdown",
-    name=get_module().NAME,
+    name=module.NAME,
     packages=find_packages(),
     platforms=["any"],
-    version=get_module().VERSION,
+    version=module.VERSION,
     url="https://github.com/ShowMax/django-admin-page-lock",
 )
