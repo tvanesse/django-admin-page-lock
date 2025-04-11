@@ -1,6 +1,8 @@
 from __future__ import unicode_literals
 
-import imp
+import importlib.machinery, importlib.util
+
+
 import io
 import os
 
@@ -23,7 +25,12 @@ def get_module():
         "__init__.py",
     )
 
-    return imp.load_source("page_lock", init_path)
+    loader = importlib.machinery.SourceFileLoader("page_lock", init_path)
+    spec = importlib.util.spec_from_loader(loader.name, loader)
+    module = importlib.util.module_from_spec(spec)
+
+    return module
+    # return loader.exec_module(module)
 
 
 # Allow setup.py to be run from any path.
