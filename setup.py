@@ -29,8 +29,8 @@ def get_module():
     spec = importlib.util.spec_from_loader(loader.name, loader)
     module = importlib.util.module_from_spec(spec)
 
-    return module
-    # return loader.exec_module(module)
+    # return module
+    return loader.exec_module(module)
 
 
 # Allow setup.py to be run from any path.
